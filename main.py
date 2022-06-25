@@ -18,6 +18,7 @@ class Xbox_LFG_Interaction:
         while True:
             status_code, response_data = await post_collection.LFG_Post_Collector().retrieve_posts(session, self.authorization_token)
             if status_code == 200:
+                print(' \x1b[1;39m[\x1b[1;36m*\x1b[1;39m] Retrieved (\x1b[1;33m' + str(len(response_data['results'])) + '\x1b[1;39m) posts.')
                 for result in range(len(response_data['results'])):
                     post_id = response_data['results'][result]['id']
                     post_tags = response_data['results'][result]['searchAttributes']['tags']
@@ -69,7 +70,7 @@ class Xbox_LFG_Interaction:
     @staticmethod
     def collect_tags():
         with open('tag_lists/tags.txt', 'r') as tags:
-            return [tag.lower().strip().replace(' ', '') for tag in tags.readlines()]
+            return [tag.lower().strip().replace(' ', '') for tag in tags.readlines() if tag not in ['\n', '\r\n', '\r']]
 
 
 if __name__ == '__main__':
